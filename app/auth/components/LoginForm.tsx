@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import store from "@/lib/zustand";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
 
 export default function LoginForm() {
   const { setErr, setErrText } = store();
@@ -55,7 +56,9 @@ export default function LoginForm() {
       }}
       className=" flex flex-col gap-6 justify-center items-center w-full"
     >
-      <div className="flex flex-col gap-2 w-11/12">
+      <motion.div initial={{ opacity: 0, y:50}}
+  animate={{ opacity: 1, y:0}}
+  transition={{ duration: 0.5 }}  className="flex flex-col gap-2 w-11/12">
         <label className=" px-4">Email</label>
         <input
           required
@@ -68,8 +71,10 @@ export default function LoginForm() {
           className=" w-full rounded-full text-black px-5 py-3"
           placeholder="bjarnestroustrup@orkut.com"
         ></input>
-      </div>
-      <div className="flex flex-col gap-2 w-11/12">
+      </motion.div>
+      <motion.div initial={{ opacity: 0, y:50}}
+  animate={{ opacity: 1, y:0}}
+  transition={{ duration: 0.5, delay:0.5 }} className="flex flex-col gap-2 w-11/12">
         <label className=" px-4">Password</label>
         <input
           required
@@ -82,13 +87,18 @@ export default function LoginForm() {
           className=" w-full rounded-full text-black px-5 py-3"
           placeholder="bjarnestroustrup@orkut.com"
         ></input>
-      </div>
-      <button
+      </motion.div>
+      <motion.button initial={{ opacity: 0}}
+  animate={{ opacity: 1}}
+  transition={{ duration: 0.5, delay:1 }}
         type="submit"
         className=" text-slate-950 text-xl font-bold bg-slate-50 py-3 px-12 rounded-full hover:bg-slate-200 transition-all"
       >
         Login
-      </button>
+      </motion.button>
+      <motion.div initial={{ opacity: 0}}
+  animate={{ opacity: 1}}
+  transition={{ duration: 0.5, delay:1.5 }}>
       <Link
         className=" my-6 hover:scale-110 transition-all text-lg"
         href={"/auth/signup"}
@@ -96,6 +106,7 @@ export default function LoginForm() {
         Don't have an account?{" "}
         <span className=" text-violet-500">Sign up instead</span>
       </Link>
+      </motion.div>
     </form>
   );
 }

@@ -6,6 +6,7 @@ import professiondb from "../../../public/professions.json";
 import store from "@/lib/zustand";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
 
 export default function SignupForm() {
   const { setErr, setErrText } = store();
@@ -69,7 +70,9 @@ export default function SignupForm() {
       }}
       className=" flex flex-col gap-6 justify-center items-center w-full"
     >
-      <div className="flex flex-col gap-2 w-11/12">
+      <motion.div initial={{ opacity: 0, y:50}}
+  animate={{ opacity: 1, y:0}}
+  transition={{ duration: 0.8, delay:0 }} className="flex flex-col gap-2 w-11/12">
         <label className=" px-4">Name</label>
         <input
           required
@@ -82,8 +85,10 @@ export default function SignupForm() {
           className=" w-full rounded-full text-black px-5 py-3"
           placeholder="Bjarne Stroustrup"
         ></input>
-      </div>
-      <div className="flex flex-col gap-2 w-11/12">
+      </motion.div>
+      <motion.div initial={{ opacity: 0, y:50}}
+  animate={{ opacity: 1, y:0}}
+  transition={{ duration: 0.8, delay:0.3 }} className="flex flex-col gap-2 w-11/12">
         <label className=" px-4">Email</label>
         <input
           required
@@ -96,8 +101,10 @@ export default function SignupForm() {
           className=" w-full rounded-full text-black px-5 py-3"
           placeholder="bjarnestroustrup@orkut.com"
         ></input>
-      </div>
-      <div className="flex flex-col gap-2 w-11/12">
+      </motion.div>
+      <motion.div initial={{ opacity: 0, y:50}}
+  animate={{ opacity: 1, y:0}}
+  transition={{ duration: 0.8, delay:0.6 }} className="flex flex-col gap-2 w-11/12">
         <label className=" px-4">Password</label>
         <input
           required
@@ -110,8 +117,10 @@ export default function SignupForm() {
           className=" w-full rounded-full text-black px-5 py-3"
           placeholder="bjarnestroustrup@orkut.com"
         ></input>
-      </div>
-      <div className="flex flex-col gap-2 w-11/12 text-slate-100">
+      </motion.div>
+      <motion.div initial={{ opacity: 0, y:50}}
+  animate={{ opacity: 1, y:0}}
+  transition={{ duration: 0.8, delay:0.9 }} className="flex flex-col gap-2 w-11/12 text-slate-100">
         <label className=" px-4">Date of Birth</label>
         <input
           required
@@ -124,9 +133,11 @@ export default function SignupForm() {
           className=" w-full rounded-full text-black px-5 py-3"
           placeholder="bjarnestroustrup@orkut.com"
         ></input>
-      </div>
+      </motion.div>
       <div className="flex flex-row gap-2 w-11/12">
-        <div className="flex flex-col gap-2 w-1/3">
+        <motion.div initial={{ opacity:0, y:50 }}
+  animate={{ opacity: 1, y:0}}
+  transition={{ duration: 0.8, delay:1.2 }} className="flex flex-col gap-2 w-1/3">
           <label className=" px-4">Country</label>
           <select
             required
@@ -150,8 +161,10 @@ export default function SignupForm() {
               );
             })}
           </select>
-        </div>
-        <div className="flex flex-col gap-2 w-1/3">
+        </motion.div>
+        <motion.div initial={{ opacity:0, y:50}}
+  animate={{ opacity: 1, y:0}}
+  transition={{ duration: 0.8, delay:1.5}} className="flex flex-col gap-2 w-1/3">
           <label className=" px-4">State</label>
           <select
             required
@@ -179,8 +192,10 @@ export default function SignupForm() {
                 );
               })}
           </select>
-        </div>
-        <div className="flex flex-col gap-2 w-1/3">
+        </motion.div>
+        <motion.div initial={{ opacity:0, y:50}}
+  animate={{ opacity: 1, y:0}}
+  transition={{ duration: 0.8, delay:1.8 }} className="flex flex-col gap-2 w-1/3">
           <label className=" px-4">City</label>
           <select
             required
@@ -211,10 +226,12 @@ export default function SignupForm() {
                 );
               })}
           </select>
-        </div>
+        </motion.div>
       </div>
       <div className="flex flex-row gap-2 w-11/12">
-        <div className="flex flex-col gap-2 w-1/2">
+        <motion.div initial={{ opacity:0, y:50}}
+  animate={{ opacity: 1, y:0}}
+  transition={{ duration: 0.8, delay:2.1 }} className="flex flex-col gap-2 w-1/2">
           <label className=" px-4">Gender</label>
           <select
             required
@@ -235,8 +252,10 @@ export default function SignupForm() {
               );
             })}
           </select>
-        </div>
-        <div className="flex flex-col gap-2 w-1/2">
+        </motion.div>
+        <motion.div initial={{ opacity:0, y:50}}
+  animate={{ opacity: 1, y:0}}
+  transition={{ duration: 0.8, delay:2.4 }} className="flex flex-col gap-2 w-1/2">
           <label className=" px-4">Profession</label>
           <select
             required
@@ -260,14 +279,19 @@ export default function SignupForm() {
               );
             })}
           </select>
-        </div>
+        </motion.div>
       </div>
-      <button
+      <motion.button initial={{ opacity: 0}}
+  animate={{ opacity: 1}}
+  transition={{ duration: 0.5, delay:2.7 }}
         type="submit"
         className=" text-slate-950 text-xl font-bold bg-slate-50 py-3 px-12 rounded-full hover:bg-slate-200 transition-all"
       >
         Sign up
-      </button>
+      </motion.button>
+      <motion.div initial={{ opacity: 0}}
+  animate={{ opacity: 1}}
+  transition={{ duration: 0.5, delay:3 }} className=" flex">
       <Link
         className=" my-6 hover:scale-110 transition-all text-lg"
         href={"/auth/login"}
@@ -275,6 +299,7 @@ export default function SignupForm() {
         Already have an account?{" "}
         <span className=" text-violet-500">Login instead</span>
       </Link>
+      </motion.div>
     </form>
   );
 }
