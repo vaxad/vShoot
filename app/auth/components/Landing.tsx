@@ -4,8 +4,9 @@ import store from "@/lib/zustand";
 import { useRouter } from "next/navigation";
 
 export default function Landing() {
-    const {user} = store()
+    
     const router = useRouter()
+    const {user} = store()
     const handleStart = async() =>{
         console.log(user)
         if(!user){
