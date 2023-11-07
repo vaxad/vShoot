@@ -8,7 +8,7 @@ export default function Navbar() {
   const path = usePathname();
   return (
     <div className=" flex flex-col">
-      <div className=" w-full flex flex-row py-1 px-24 justify-between items-center bg-black bg-opacity-10">
+      <div className=" w-full flex flex-row py-1 px-24 justify-between items-center bg-black bg-opacity-30">
         <img src="/logo.png" height={120} width={120} className=""></img>
         <ul className=" flex flex-row gap-8">
           <Link

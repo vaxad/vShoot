@@ -7,23 +7,28 @@ import store from "@/lib/zustand";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
+import { useSession } from "next-auth/react";
 
 export default function SignupForm() {
   const { setErr, setErrText } = store();
+  const {data : session} = useSession()
+  const [stage, setStage] = useState(1)
   const [data, setdata] = useState({
     name: "",
-    email: "",
-    password: "",
+    email: session?.user?.email as string,
+    password: "none",
     dob: "",
     country: "",
     state: "",
     city: "",
     gender: "",
     profession: "",
+    role:""
   });
   const locations = db as location[];
   const genders = genderdb as String[];
   const professions = professiondb as String[];
+  const roles = ["Creator", "Viewer"] as String[];
   const router = useRouter();
 
   const handleChange = async (
@@ -35,8 +40,45 @@ export default function SignupForm() {
     setErr(false);
   };
 
+  const handleNext = () => {
+    switch(stage){
+      case 1:
+        if(data.name===""){
+          alert("Please enter your name")
+          return
+        }
+        break
+      case 2:
+        if(data.name===""){
+          alert("Please enter your date of birth")
+          return
+        }
+        break
+      case 3:
+        if(data.country===""){
+          alert("Please enter your country")
+          return
+        }
+        break
+      case 4:
+        if(data.profession===""){
+          alert("Please enter your profession")
+          return
+        }
+        break
+      case 5:
+        if(data.role===""){
+          alert("Please enter your role")
+          return
+        }
+        break
+      
+    }
+    setStage(stage+1)
+  }
+
   const { setUser, user } = store();
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     const values = Object.values(data);
     console.log(values);
@@ -65,15 +107,12 @@ export default function SignupForm() {
 
   return (
     <form
-      onSubmit={(e) => {
-        handleSubmit(e);
-      }}
-      className=" flex flex-col gap-6 justify-center items-center w-full"
+      className="{` flex flex-col gap-6 justify-center items-center w-full"
     >
       <motion.div initial={{ opacity: 0, y:50}}
   animate={{ opacity: 1, y:0}}
-  transition={{ duration: 0.8, delay:0 }} className="flex flex-col gap-2 w-11/12">
-        <label className=" px-4">Name</label>
+  transition={{ duration: 0.8, delay:0 }} className={`${stage!==1&&"hidden "}flex flex-col gap-2 w-11/12`}>
+        <label className="{` px-4`}">Name</label>
         <input
           required
           onChange={(e) => {
@@ -82,14 +121,14 @@ export default function SignupForm() {
           value={data.name}
           id="name"
           type="text"
-          className=" w-full rounded-full text-black px-5 py-3"
+          className={`w-full rounded-full text-black px-5 py-3`} 
           placeholder="Bjarne Stroustrup"
         ></input>
       </motion.div>
       <motion.div initial={{ opacity: 0, y:50}}
   animate={{ opacity: 1, y:0}}
-  transition={{ duration: 0.8, delay:0.3 }} className="flex flex-col gap-2 w-11/12">
-        <label className=" px-4">Email</label>
+  transition={{ duration: 0.8, delay:0.3 }} className={`${stage!=-1&&" hidden"} flex flex-col gap-2 w-11/12`}>
+        <label className="{` px-4`}">Email</label>
         <input
           required
           onChange={(e) => {
@@ -98,14 +137,14 @@ export default function SignupForm() {
           value={data.email}
           id="email"
           type="email"
-          className=" w-full rounded-full text-black px-5 py-3"
+          className="{` w-full rounded-full text-black px-5 py-3"
           placeholder="bjarnestroustrup@orkut.com"
         ></input>
       </motion.div>
       <motion.div initial={{ opacity: 0, y:50}}
   animate={{ opacity: 1, y:0}}
-  transition={{ duration: 0.8, delay:0.6 }} className="flex flex-col gap-2 w-11/12">
-        <label className=" px-4">Password</label>
+  transition={{ duration: 0.8, delay:0.6 }} className={`${stage!=-1&&" hidden"} flex flex-col gap-2 w-11/12`}>
+        <label className={` px-4`}>Password</label>
         <input
           required
           onChange={(e) => {
@@ -114,14 +153,14 @@ export default function SignupForm() {
           value={data.password}
           id="password"
           type="password"
-          className=" w-full rounded-full text-black px-5 py-3"
+          className="{` w-full rounded-full text-black px-5 py-3"
           placeholder="bjarnestroustrup@orkut.com"
         ></input>
       </motion.div>
       <motion.div initial={{ opacity: 0, y:50}}
   animate={{ opacity: 1, y:0}}
-  transition={{ duration: 0.8, delay:0.9 }} className="flex flex-col gap-2 w-11/12 text-slate-100">
-        <label className=" px-4">Date of Birth</label>
+  transition={{ duration: 0.8, delay:0.9 }} className={`${stage!=2&&" hidden"} flex flex-col gap-2 w-11/12 text-slate-100`}>
+        <label className={` px-4`}>Date of Birth</label>
         <input
           required
           onChange={(e) => {
@@ -130,22 +169,22 @@ export default function SignupForm() {
           value={data.dob}
           id="dob"
           type="date"
-          className=" w-full rounded-full text-black px-5 py-3"
+          className={` w-full rounded-full text-black px-5 py-3`}
           placeholder="bjarnestroustrup@orkut.com"
         ></input>
       </motion.div>
-      <div className="flex flex-row gap-2 w-11/12">
+      <div className={`${stage!=3&&" hidden"} flex flex-row gap-2 w-11/12`}>
         <motion.div initial={{ opacity:0, y:50 }}
   animate={{ opacity: 1, y:0}}
-  transition={{ duration: 0.8, delay:1.2 }} className="flex flex-col gap-2 w-1/3">
-          <label className=" px-4">Country</label>
+  transition={{ duration: 0.8, delay:1.2 }} className={`flex flex-col gap-2 w-1/3`}>
+          <label className="{` px-4`}">Country</label>
           <select
             required
             onChange={(e) => {
               handleChange(e);
             }}
             id="country"
-            className=" appearance-none px-5 py-3 w-full flex justify-between text-black rounded-full placeholder:w-fit "
+            className={` appearance-none px-5 py-3 w-full flex justify-between text-black rounded-full placeholder:w-fit `}
           >
             <option value={""} selected>
               Choose a Country
@@ -164,15 +203,15 @@ export default function SignupForm() {
         </motion.div>
         <motion.div initial={{ opacity:0, y:50}}
   animate={{ opacity: 1, y:0}}
-  transition={{ duration: 0.8, delay:1.5}} className="flex flex-col gap-2 w-1/3">
-          <label className=" px-4">State</label>
+  transition={{ duration: 0.8, delay:1.5}} className={`flex flex-col gap-2 w-1/3`}>
+          <label className={` px-4`}>State</label>
           <select
             required
             onChange={(e) => {
               handleChange(e);
             }}
             id="state"
-            className=" appearance-none px-5 py-3 w-full flex justify-between text-black rounded-full placeholder:w-fit "
+            className={` appearance-none px-5 py-3 w-full flex justify-between text-black rounded-full placeholder:w-fit `}
           >
             <option value={""} selected>
               Choose a State
@@ -195,15 +234,15 @@ export default function SignupForm() {
         </motion.div>
         <motion.div initial={{ opacity:0, y:50}}
   animate={{ opacity: 1, y:0}}
-  transition={{ duration: 0.8, delay:1.8 }} className="flex flex-col gap-2 w-1/3">
-          <label className=" px-4">City</label>
+  transition={{ duration: 0.8, delay:1.8 }} className={`flex flex-col gap-2 w-1/3`}>
+          <label className={` px-4`}>City</label>
           <select
             required
             onChange={(e) => {
               handleChange(e);
             }}
             id="city"
-            className=" appearance-none px-5 py-3 w-full flex justify-between text-black rounded-full placeholder:w-fit "
+            className={` appearance-none px-5 py-3 w-full flex justify-between text-black rounded-full placeholder:w-fit `}
           >
             <option value={""} selected>
               Choose a City
@@ -228,18 +267,18 @@ export default function SignupForm() {
           </select>
         </motion.div>
       </div>
-      <div className="flex flex-row gap-2 w-11/12">
+      <div className={`${stage!=4&&" hidden"} flex flex-row gap-2 w-11/12`}>
         <motion.div initial={{ opacity:0, y:50}}
   animate={{ opacity: 1, y:0}}
-  transition={{ duration: 0.8, delay:2.1 }} className="flex flex-col gap-2 w-1/2">
-          <label className=" px-4">Gender</label>
+  transition={{ duration: 0.8, delay:2.1 }} className={`flex flex-col gap-2 w-1/2`}>
+          <label className="{` px-4`}">Gender</label>
           <select
             required
             onChange={(e) => {
               handleChange(e);
             }}
             id="gender"
-            className=" appearance-none px-5 py-3 w-full flex justify-between text-black rounded-full placeholder:w-fit "
+            className={` appearance-none px-5 py-3 w-full flex justify-between text-black rounded-full placeholder:w-fit `}
           >
             <option value={""} selected>
               Choose a Gender
@@ -255,15 +294,15 @@ export default function SignupForm() {
         </motion.div>
         <motion.div initial={{ opacity:0, y:50}}
   animate={{ opacity: 1, y:0}}
-  transition={{ duration: 0.8, delay:2.4 }} className="flex flex-col gap-2 w-1/2">
-          <label className=" px-4">Profession</label>
+  transition={{ duration: 0.8, delay:2.4 }} className={`flex flex-col gap-2 w-1/2`}>
+          <label className="{` px-4`}">Profession</label>
           <select
             required
             onChange={(e) => {
               handleChange(e);
             }}
             id="profession"
-            className=" appearance-none px-5 py-3 w-full flex justify-between text-black rounded-full placeholder:w-fit "
+            className={` appearance-none px-5 py-3 w-full flex justify-between text-black rounded-full placeholder:w-fit `}
           >
             <option value={""} selected>
               Choose a Profession
@@ -281,23 +320,53 @@ export default function SignupForm() {
           </select>
         </motion.div>
       </div>
+      
+      <div className={`${stage!=5&&" hidden"} flex flex-row gap-2 w-11/12`}>
+      <motion.div initial={{ opacity:0, y:50}}
+  animate={{ opacity: 1, y:0}}
+  transition={{ duration: 0.8, delay:2.4 }} className={`flex flex-col gap-2 w-full`}>
+          <label className="{` px-4`}">Role</label>
+          <select
+            required
+            onChange={(e) => {
+              handleChange(e);
+            }}
+            id="role"
+            className={` appearance-none px-5 py-3 w-full flex justify-between text-black rounded-full placeholder:w-fit `}
+          >
+            <option value={""} selected>
+              Choose a Role
+            </option>
+            {roles.map((role) => {
+              return (
+                <option
+                  key={role as React.Key}
+                  value={role as string}
+                >
+                  {role}
+                </option>
+              );
+            })}
+          </select>
+        </motion.div>
+        </div>
       <motion.button initial={{ opacity: 0}}
   animate={{ opacity: 1}}
   transition={{ duration: 0.5, delay:2.7 }}
-        type="submit"
-        className=" text-slate-950 text-xl font-bold bg-slate-50 py-3 px-12 rounded-full hover:bg-slate-200 transition-all"
+        type={`${"button"}`} onClick={(e)=>{stage<5?handleNext():handleSubmit(e)}}
+        className={` text-slate-950 text-xl font-bold bg-slate-50 py-3 px-12 rounded-full hover:bg-slate-200 transition-all`}
       >
-        Sign up
+        {`${stage===5?"Create Account":"Next"}`}
       </motion.button>
       <motion.div initial={{ opacity: 0}}
   animate={{ opacity: 1}}
-  transition={{ duration: 0.5, delay:3 }} className=" flex">
+  transition={{ duration: 0.5, delay:3 }} className="{` flex`}">
       <Link
-        className=" my-6 hover:scale-110 transition-all text-lg"
+        className="{` my-6 hover:scale-110 transition-all text-lg"
         href={"/auth/login"}
       >
         Already have an account?{" "}
-        <span className=" text-violet-500">Login instead</span>
+        <span className="{` text-violet-500`}">Login instead</span>
       </Link>
       </motion.div>
     </form>

@@ -12,14 +12,15 @@ datasource db {
 
 model User {
   id String         @id @default(cuid())
-  name String
+  name String?
   email String
-  password String
+  password String?
   dob DateTime?
   profession String?
   country String?
   state String?
   city String?
   gender String?
+  role String?
   createdAt DateTime @default(now())
 }
