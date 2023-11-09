@@ -22,5 +22,7 @@ model User {
   city String?
   gender String?
   role String?
+  otp Int?
+  verified Boolean?
   createdAt DateTime @default(now())
 }

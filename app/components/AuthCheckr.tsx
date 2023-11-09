@@ -15,9 +15,28 @@ export default function AuthCheckr() {
         redirect(`/api/auth/signin?callbackUrl=/auth`)
     }
 })
-const user = session?.user
+const { user } = store()
+const sendOtp = async(user:UserNull) => {
+  const res = await fetch('/api/mail',{
+    method:"POST",
+    headers:{
+      "Content-type":"application/json"
+    },
+    body:JSON.stringify({email:user?.email, id:user?.id})
+  })
+  const resp = await res.json()
+  console.log(resp)
+}
   useEffect(() => {
-    const localToken = localStorage.getItem("auth-token");
+    // const localToken = localStorage.getItem("auth-token");
+    if(user){
+      if(!user.verified&&user.password!=="none"&&session?.user?.email===user.email){
+        if(path!=="/auth/verify"){
+        sendOtp(user)
+        router.push("/auth/verify")
+        }
+      }
+    }
     // console.log(token);
     // if(token===""){
     //   setToken(localToken?localToken:"")

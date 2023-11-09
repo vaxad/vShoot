@@ -94,7 +94,7 @@ export default function SignupForm() {
         body: JSON.stringify(data),
       });
       const resJson = await resp.json();
-      localStorage.setItem("auth-token", resJson.token);
+      // localStorage.setItem("auth-token", resJson.token);
       if (resJson.error) {
         setErrText("User with this email already exists");
         setErr(true);

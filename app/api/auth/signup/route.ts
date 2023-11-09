@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import prisma from "@/prisma/client";
 import jwt from "jsonwebtoken";
+import { cookies } from "next/headers"
 
 const key = process.env.NEXT_PUBLIC_JWT_KEY || "";
 export async function POST(req: Request) {
@@ -37,6 +38,11 @@ export async function POST(req: Request) {
       if (createdUser) {
         const token = jwt.sign({ id: createdUser.id }, key);
         createdUser.password = "****************";
+        cookies().set('authToken', token, {
+          expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
+          path: '/',
+          httpOnly: true, // for added security, making the cookie inaccessible via JavaScript
+        });
         return NextResponse.json({ user: createdUser, token });
       } else {
         NextResponse.error();
@@ -59,7 +65,12 @@ export async function POST(req: Request) {
       if (createdUser) {
         const token = jwt.sign({ id: createdUser.id }, key);
         createdUser.password = "****************";
-        return NextResponse.json({ user: createdUser, token });
+        cookies().set('authToken', token, {
+          expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
+          path: '/',
+          httpOnly: true, // for added security, making the cookie inaccessible via JavaScript
+        });
+        return NextResponse.json({ user: createdUser, authToken: token });
       } else {
         NextResponse.error();
       }
@@ -68,3 +79,28 @@ export async function POST(req: Request) {
     console.log(error);
   }
 }
+
+
+export async function PUT(req: Request) {
+  try {
+    const {
+      email
+    } = await req.json();
+    const oldUser = await prisma.user.findFirst({
+      where: { email: email },
+    });
+    if (oldUser) {
+        const token = jwt.sign({ id: oldUser.id }, key);
+        oldUser.password = "****************";
+        cookies().set('authToken', token, {
+          expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
+          path: '/',
+          httpOnly: true, // for added security, making the cookie inaccessible via JavaScript
+        });
+        return NextResponse.json({ user: oldUser, token });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+

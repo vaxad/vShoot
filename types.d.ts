@@ -1,26 +1,28 @@
 type User = {
-  id: String;
-  name: String;
-  email: String;
-  password: String;
+  id: string;
+  name: string;
+  email: string;
+  password: string;
   dob: Date;
-  profession: String?;
-  country: String?;
-  state: String?;
-  city: String?;
-  gender: String?;
+  profession: string?;
+  country: string?;
+  state: string?;
+  city: string?;
+  gender: string?;
   createdAt: Date;
+  role: string?;
+  verified: Boolean?;
 };
 
 type UserNull = User | null;
 type location = {
-  name: String;
+  name: string;
   states: [
     {
-      name: String;
+      name: string;
       cities: [
         {
-          name: String;
+          name: string;
         },
       ];
     },

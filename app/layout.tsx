@@ -1,12 +1,12 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+// import { Inter } from "next/font/google";
 import Navbar from "./components/Navbar";
 import AuthCheckr from "./components/AuthCheckr";
 import Bg from "./auth/components/Bg";
 import AuthProvider from "@/lib/context/AuthProvider";
 
-const inter = Inter({ subsets: ["latin"] });
+// const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "vShoot",
@@ -20,7 +20,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className+" min-h-screen"}>
+      <body className={" min-h-screen overflow-x-hidden"}>
         <AuthProvider>
         <Navbar />
         <AuthCheckr />

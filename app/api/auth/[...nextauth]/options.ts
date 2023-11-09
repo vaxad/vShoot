@@ -54,6 +54,7 @@ export const options: NextAuthOptions = {
                       password: credentials?.password?encryptedPass:"none",
                     },
                   });
+            
                   return user
             }
             }
