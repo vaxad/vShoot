@@ -22,9 +22,9 @@ export default function Navbar() {
             Home
           </Link>
           <Link
-            href={"/shoots"}
+            href={"/create"}
             className={` cursor-pointer text-lg hover:text-slate-50  transition-all text-slate-400 ${
-              path.includes("shoots") && "text-slate-50"
+              path.includes("create") && "text-slate-50"
             }`}
           >
             Shoots

@@ -26,3 +26,16 @@ model User {
   verified Boolean?
   createdAt DateTime @default(now())
 }
+
+model Post {
+  id String         @id @default(cuid())
+  caption String?
+  imgs String[]
+  tags String[]
+  loc_name String
+  loc_lat Float
+  loc_lon Float
+  likes String[]
+  comments String[]
+  createdAt DateTime @default(now())
+}
