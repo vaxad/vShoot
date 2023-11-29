@@ -35,7 +35,7 @@ export default function Description() {
             {content.map((element, index)=>{
                 const delay = 0.3+((index)/10)
                 return (
-                    <motion.div initial={{opacity:0, y:50}} whileInView={{opacity:1, y:0}} transition={{duration:0.8, delay}} key={index} className=" flex flex-col h-full w-full bg-purple-600 gap-2 p-5 rounded-lg cursor-default">
+                    <motion.div initial={{opacity:0, y:50}} whileInView={{opacity:1, y:0}} transition={{duration:0.8, delay}} key={index} className=" flex flex-col h-full w-full bg-gradient-to-tr hover:bg-gradient-to-bl bg-opacity-70 transition-all from-indigo-500 to-purple-900 gap-2 p-5 rounded-lg cursor-default">
                 <h1 className=" text-xl">{element.title}</h1>
                 <hr></hr>
                 <p>{element.desc}</p>

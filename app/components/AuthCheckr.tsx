@@ -1,5 +1,6 @@
 "use client";
 import store from "@/lib/zustand";
+import axios from "axios";
 import { useSession } from "next-auth/react";
 import { redirect, usePathname, useRouter } from "next/navigation";
 import React, { useEffect } from "react";
@@ -11,11 +12,11 @@ export default function AuthCheckr() {
   const { data: session } = useSession({
     required: true,
     onUnauthenticated() {
-        if(path!=="/")
-        redirect(`/api/auth/signin?callbackUrl=/auth`)
+        // if(path!=="/")
+        // redirect(`/api/auth/signin?callbackUrl=/auth`)
     }
 })
-const { user } = store()
+const { user , setUser} = store()
 const sendOtp = async(user:UserNull) => {
   const res = await fetch('/api/mail',{
     method:"POST",
@@ -27,8 +28,16 @@ const sendOtp = async(user:UserNull) => {
   const resp = await res.json()
   console.log(resp)
 }
+// useEffect(() => {
+//   if(!session){
+//     router.push("http://localhost:3000/api/auth/signin?callbackUrl=/auth")
+//   }
+// }, [session])
+
   useEffect(() => {
     // const localToken = localStorage.getItem("auth-token");
+    console.log(user)
+
     if(user){
       if(!user.verified&&user.password!=="none"&&session?.user?.email===user.email){
         if(path!=="/auth/verify"){
@@ -36,6 +45,25 @@ const sendOtp = async(user:UserNull) => {
         router.push("/auth/verify")
         }
       }
+    }else{
+      console.log("no user")
+      const getme = async() =>{ 
+      const res = (await axios.get("/api/auth/login")).data
+      console.log(res)
+      if(res.expired){
+        if(path!=="/")
+        router.push("http://localhost:3000/api/auth/signin?callbackUrl=/auth")
+      }else{
+      if(!res.user){
+        if(!path.includes("auth")&&path!=="/")
+        router.push("/auth")
+      }else{
+        console.log(res.user)
+      setUser(res.user)
+      }
+    }
+      }
+      getme()
     }
     // console.log(token);
     // if(token===""){

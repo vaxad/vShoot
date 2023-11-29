@@ -18,9 +18,14 @@ export default function page() {
             body: JSON.stringify({email:session?.user?.email})
         });
         const resJson = await resp.json();
-        setUser(resJson.user)
+        console.log(resJson)
+        if(resJson.error){
+            router.push("http://localhost:3000/api/auth/signin?callbackUrl=/auth")
+        }
         if(resJson.expired){
-            signOut()
+            router.push("http://localhost:3000/api/auth/signin?callbackUrl=/auth")
+        }else{
+            setUser(resJson.user)
         }
         if(resJson.old){
             router.push("/home")
@@ -30,7 +35,6 @@ export default function page() {
         // setUser(resJson.user)
     }
     useEffect(() => {
-        if(session?.user?.email)
       userOld()
     }, [session?.user])
     

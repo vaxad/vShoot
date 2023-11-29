@@ -4,6 +4,10 @@ import GoogleProvider from 'next-auth/providers/google'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import prisma from '@/prisma/client';
 import { compare, hash } from 'bcrypt';
+import { cookies } from 'next/headers';
+import jwt from "jsonwebtoken"
+
+const key = process.env.NEXT_PUBLIC_JWT_KEY || "";
 
 export const options: NextAuthOptions = {
     providers: [
@@ -34,12 +38,20 @@ export const options: NextAuthOptions = {
                 // to verify with credentials
                 // Docs: https://next-auth.js.org/configuration/providers/credentials
                 // const user = { id: "42", name: "Dave", password: "nextauth" }
+                console.log(credentials)
                 const user = await prisma.user.findFirst({
                     where: { email: credentials?.email },
                   });
                   if(user){
                   const passMatched = user?.password==="none"?true:await compare(credentials?.password as string, user?.password as string);
                 if (credentials?.email === user?.email && passMatched) {
+                    const token = jwt.sign({ id: user.id }, key);
+
+                    cookies().set('authToken', token, {
+                        expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
+                        path: '/',
+                        httpOnly: true, // for added security, making the cookie inaccessible via JavaScript
+                      });
                     return user
                 } else {
                     return null
@@ -54,7 +66,13 @@ export const options: NextAuthOptions = {
                       password: credentials?.password?encryptedPass:"none",
                     },
                   });
-            
+                  const token = jwt.sign({ id: user.id }, key);
+
+                    cookies().set('authToken', token, {
+                        expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
+                        path: '/',
+                        httpOnly: true, // for added security, making the cookie inaccessible via JavaScript
+                      });
                   return user
             }
             }

@@ -20,3 +20,20 @@ export async function POST(req: Request) {
         return NextResponse.json({ message: 'Email sending failed' });
     }
 };
+
+export async function PUT(req: Request) {
+    try {
+        const {id} = await req.json();
+        const user = await prisma.user.findUnique(
+            {
+                where: {
+                    id:id
+                }
+            }
+        )
+        return NextResponse.json({ user: user });
+    } catch (error) {
+        console.error('Error gettin user:', error);
+        return NextResponse.json({ message: 'Error gettin user' });
+    }
+};

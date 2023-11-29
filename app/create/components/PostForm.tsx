@@ -1,18 +1,20 @@
 "use client"
 import { motion } from "framer-motion"
-import { use, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Carausel from "./Carausel";
 import store from "@/lib/zustand";
 import L from "leaflet"
 import axios from "axios"
 import Loading from "@/app/components/Loading";
+import { useRouter } from "next/navigation";
 
 export default function PostForm() {
   const emptyArray = [] as string[]
   const [loading, setloading] = useState(false)
-  const { setErr, setErrText } = store()
+  const { setErr, setErrText, user } = store()
   const tempLoc = {} as LocationType
-  const [data, setData] = useState({ caption: "", tags: emptyArray, location: tempLoc, imgs: emptyArray, visibility: "public" })
+  const router = useRouter()
+  const [data, setData] = useState({ creatorId:user?.id, caption: "", tags: emptyArray, location: tempLoc, imgs: emptyArray, visibility: "public" })
   const handleChange = async (
     e:
       | React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement> | React.ChangeEvent<HTMLTextAreaElement>,
@@ -33,6 +35,11 @@ export default function PostForm() {
     setUserList([])
     tag.value = ""
   }
+
+  useEffect(() => {
+    setData({ ...data, creatorId: user?.id })
+  }, [user])
+  
 
   const removeTag = (RemoveIndex: Number) => {
     const filteredTags = data.tags.filter((element, index) => index != RemoveIndex)
@@ -153,11 +160,11 @@ export default function PostForm() {
     for(const file of imgFiles){
       const formData = new FormData();
         formData.append('file', file);
-        formData.append('upload_preset', process.env.CLOUDINARY_PRESET as string);
+        formData.append('upload_preset', "unicode_tasks");
 
         try {
             const response = await axios.post(
-                process.env.CLOUDINARY_URL as string,
+                "https://api.cloudinary.com/v1_1/db670bhmc/image/upload",
                 formData
             );
             const responseData = await response.data
@@ -173,10 +180,11 @@ console.log(imgs)
 console.log(imgFiles)
 const resp = await fetch("/api/post",{
   method:"POST",
-  body:JSON.stringify({caption:data.caption, imgs:imgs, location:data.location, tags:data.tags})
+  body:JSON.stringify({creatorId: data.creatorId,caption:data.caption, imgs:imgs, location:data.location, tags:data.tags})
 })
 const respData = await  resp.json()
 console.log(respData)
+router.push("/home")
   }
   return loading?(
     <Loading/>

@@ -24,17 +24,20 @@ model User {
   role String?
   otp Int?
   verified Boolean?
+  posts Post[]
   createdAt DateTime @default(now())
 }
 
 model Post {
   id String         @id @default(cuid())
   caption String?
+  creator User? @relation(fields: [creatorId], references: [id])
+  creatorId String? 
   imgs String[]
   tags String[]
-  loc_name String
-  loc_lat Float
-  loc_lon Float
+  loc_name String?
+  loc_lat Float?
+  loc_lon Float?
   likes String[]
   comments String[]
   createdAt DateTime @default(now())

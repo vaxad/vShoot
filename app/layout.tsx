@@ -29,7 +29,7 @@ export default function RootLayout({
       <body className={" min-h-screen overflow-x-hidden"}>
         <AuthProvider>
         <Navbar />
-        {/* <AuthCheckr /> */}
+        <AuthCheckr />
         <Bg/>
         {children}
         </AuthProvider>
