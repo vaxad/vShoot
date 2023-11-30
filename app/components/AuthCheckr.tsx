@@ -44,6 +44,10 @@ const sendOtp = async(user:UserNull) => {
         sendOtp(user)
         router.push("/auth/verify")
         }
+      }else{
+        if(path.includes("auth")&&user.name&&user.gender&&user.role){
+          router.push("/home")
+          }
       }
     }else{
       console.log("no user")
@@ -51,7 +55,7 @@ const sendOtp = async(user:UserNull) => {
       const res = (await axios.get("/api/auth/login")).data
       console.log(res)
       if(res.expired){
-        if(path!=="/")
+        if(path!=="/"&&!path.includes("auth"))
         router.push("http://localhost:3000/api/auth/signin?callbackUrl=/auth")
       }else{
       if(!res.user){
@@ -59,6 +63,7 @@ const sendOtp = async(user:UserNull) => {
         router.push("/auth")
       }else{
         console.log(res.user)
+
       setUser(res.user)
       }
     }

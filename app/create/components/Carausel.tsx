@@ -1,3 +1,4 @@
+"use client"
 import { useEffect, useState } from "react"
 
 export default function Carausel({ imgs, removeImage } : {imgs: string[], removeImage: (imageIndex: Number) => void} | {imgs: string[], removeImage: null}  ) {

@@ -103,7 +103,7 @@ export default function LoginForm() {
         className=" my-6 hover:scale-110 transition-all text-lg"
         href={"/auth/signup"}
       >
-        Don't have an account?{" "}
+        Don&apos;t have an account?{" "}
         <span className=" text-violet-500">Sign up instead</span>
       </Link>
       </motion.div>

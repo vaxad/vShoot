@@ -59,7 +59,7 @@ export default function Landing() {
       </motion.button>
       <motion.h1 initial={{ opacity: 0, y:60}}
   animate={{ opacity: 1, y:0}}
-  transition={{ duration: 0.8, delay:1.6}} className=" text-lg italic ">"<span className=" text-purple-400">Connect, Collaborate, Create</span> on the Ultimate Platform for Creative Professionals"</motion.h1>
+  transition={{ duration: 0.8, delay:1.6}} className=" text-lg italic ">&quot;<span className=" text-purple-400">Connect, Collaborate, Create</span> on the Ultimate Platform for Creative Professionals&quot;</motion.h1>
       </motion.div>
     </div>
     <Intro/>

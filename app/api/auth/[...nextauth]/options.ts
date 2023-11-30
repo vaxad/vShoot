@@ -10,6 +10,7 @@ import jwt from "jsonwebtoken"
 const key = process.env.NEXT_PUBLIC_JWT_KEY || "";
 
 export const options: NextAuthOptions = {
+    secret: process.env.NEXTAUTH_SECRET,
     providers: [
         GitHubProvider({
             clientId: process.env.GITHUB_ID as string,
@@ -38,6 +39,7 @@ export const options: NextAuthOptions = {
                 // to verify with credentials
                 // Docs: https://next-auth.js.org/configuration/providers/credentials
                 // const user = { id: "42", name: "Dave", password: "nextauth" }
+                console.log("nextauth")
                 console.log(credentials)
                 const user = await prisma.user.findFirst({
                     where: { email: credentials?.email },
@@ -66,6 +68,8 @@ export const options: NextAuthOptions = {
                       password: credentials?.password?encryptedPass:"none",
                     },
                   });
+                  console.log("nextauth")
+                  console.log(user)
                   const token = jwt.sign({ id: user.id }, key);
 
                     cookies().set('authToken', token, {

@@ -25,13 +25,21 @@ export async function POST(req: Request) {
             subject: "Email verification for Vshoot",
             text: `Your otp is ${otp}`,
         };
+        const user = await prisma.user.findUnique({
+            where: { id: credentials?.id },
+        })
+        if(user?.otpTime){
+        if((new Date()).getTime() - user?.otpTime.getTime()>10000){
         const updatedUser = await prisma.user.update({
             where: { id: credentials?.id },
             data: {
                 otp: otp
             },
         })
+        console.log(updatedUser);
         await transporter.sendMail(mailOptions);
+    }
+}
         return NextResponse.json({ message: 'Email sent' });
     } catch (error) {
         console.error('Error sending email:', error);

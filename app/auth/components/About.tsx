@@ -26,7 +26,7 @@ export default function About() {
                 return (
                     <motion.div initial={{opacity:0,x:initX}} whileInView={{opacity:1,x:0}} transition={{duration:0.8, delay:del}} key={index} className={` flex flex-col gap-2 w-full bg-purple-500 bg-opacity-20 p-5 rounded-lg ${index%2==0?" justify-start text-start":" justify-end text-end"}`}>
                         <h1 className=" text-2xl font-bold underline decoration-purple-600">{element.title}</h1>
-                        <p className=" italic">"{element.desc}"</p>
+                        <p className=" italic">&quot;{element.desc}&quot;</p>
                     </motion.div>
                 )
             })}

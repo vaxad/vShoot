@@ -8,9 +8,10 @@ export async function GET(req: Request) {
   try {
     const token = cookies().get("authToken");
     if(token){
-    const id = jwt.verify(token?.value as string, key)
+    const {id} = jwt.verify(token?.value as string, key) as { id: string };
+
     const oldUser = await prisma.user.findFirst({
-      where: { id: id?.id as string },
+      where: { id: id as string },
     });
     if (!oldUser) {
       return NextResponse.json({ error: "does not exist" });

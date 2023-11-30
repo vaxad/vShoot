@@ -22,7 +22,7 @@ export default function Contact() {
             </div>
             <div className=' flex flex-col gap-2 w-2/3 justify-start items-start'>
                 <h1 className=' text-xl font-bolD'>Get in Touch</h1>
-                <p>Have questions or feedback? We'd love to hear from you.</p>
+                <p>Have questions or feedback? We&apos;d love to hear from you.</p>
                 <div className=' flex flex-row justify-start items-center gap-3'>
                     <img src='/email.png' width={20} height={20}></img>
                     <h2 className=' text-sm text-slate-300'>testvaxad@gmail.com</h2>
