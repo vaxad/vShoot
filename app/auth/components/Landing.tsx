@@ -23,15 +23,15 @@ export default function Landing() {
   return (
     <main id="landing" className=" flex flex-col w-full h-full">
     <div
-      className="flex flex-col gap-3 items-center justify-center min-h-screen px-24"
+      className="flex flex-col gap-3 items-center justify-center min-h-screen lg:px-24 md:px-12 px-6"
     >
       <motion.div initial={{ opacity: 0}}
   animate={{ opacity: 1}}
-  transition={{ duration: 1}} className=" flex flex-row gap-5 justify-between items-center w-full">
-        <div className=" flex flex-col gap-5 justify-start  w-2/3">
+  transition={{ duration: 1}} className=" flex flex-col md:flex-row gap-5 justify-between items-center w-full">
+        <div className=" flex flex-col gap-5 justify-start w-full  md:w-2/3">
       <motion.h1 initial={{ opacity: 0, y:100}}
   animate={{ opacity: 1, y:0}}
-  transition={{ duration: 0.8, delay:0}} className=" text-4xl font-bold w-2/3">
+  transition={{ duration: 0.8, delay:0}} className=" text-4xl font-bold md:w-2/3 w-full">
         <span className=" text-purple-300">Capturing</span> Moments, Creating Memories!
       </motion.h1>
       
@@ -59,7 +59,7 @@ export default function Landing() {
       </motion.button>
       <motion.h1 initial={{ opacity: 0, y:60}}
   animate={{ opacity: 1, y:0}}
-  transition={{ duration: 0.8, delay:1.6}} className=" text-lg italic ">&quot;<span className=" text-purple-400">Connect, Collaborate, Create</span> on the Ultimate Platform for Creative Professionals&quot;</motion.h1>
+  transition={{ duration: 0.8, delay:1.6}} className=" text-lg italic text-center ">&quot;<span className=" text-purple-400 ">Connect, Collaborate, Create</span> on the Ultimate Platform for Creative Professionals&quot;</motion.h1>
       </motion.div>
     </div>
     <Intro/>

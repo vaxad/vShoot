@@ -51,12 +51,13 @@ const sendOtp = async(user:UserNull) => {
       }
     }else{
       console.log("no user")
+      const url = process.env.NEXT_PUBLIC_URL
       const getme = async() =>{ 
       const res = (await axios.get("/api/auth/login")).data
       console.log(res)
       if(res.expired){
         if(path!=="/"&&!path.includes("auth"))
-        router.push("http://localhost:3000/api/auth/signin?callbackUrl=/auth")
+        router.push(`http://${url}/api/auth/signin?callbackUrl=/auth`)
       }else{
       if(!res.user){
         if(!path.includes("auth")&&path!=="/")

@@ -17,7 +17,7 @@ export default function About() {
         
     ]
   return (
-    <div className=" flex flex-col justify-center items-center w-full min-h-screen gap-24 px-24">
+    <div className=" flex flex-col justify-start items-center w-full min-h-screen h-full py-12 gap-24 px-24">
         <motion.h1 initial={{opacity:0}} whileInView={{opacity:1}} transition={{duration:0.8}} className=" text-4xl font-bold tracking-wide">ABOUT <span className=" text-purple-500">vSHOOT</span></motion.h1>
         <div className=" flex flex-col gap-8 w-full ">
             {content.map((element,index)=>{

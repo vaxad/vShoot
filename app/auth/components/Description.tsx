@@ -29,9 +29,9 @@ export default function Description() {
 
     ]
   return (
-    <div className=" flex flex-col justify-center items-center min-h-screen w-full gap-24 px-24">
+    <div className=" flex flex-col justify-start items-center md:h-screen h-[200vh] w-full gap-24 lg:px-24 md:px-12 px-6 py-12">
         <motion.h1 initial={{opacity:0}} whileInView={{opacity:1}} transition={{duration:0.8}} className=" text-4xl font-bold tracking-wide">WHY <span className=" text-purple-500">vSHOOT</span>?</motion.h1>
-        <div className=" grid grid-cols-3 justify-center items-center gap-12 w-full">
+        <div className=" grid grid-cols-1 md:grid-cols-3 justify-center h-fit items-center gap-12 w-full">
             {content.map((element, index)=>{
                 const delay = 0.3+((index)/10)
                 return (
