@@ -13,7 +13,7 @@ export default function PostForm() {
   const [loading, setloading] = useState(false)
   const { setErr, setErrText, user } = store()
   const router = useRouter()
-  const [data, setData] = useState({ creatorId: "", caption: "", tags: [] as string[], location: {} as LocationType, imgs: [] as string[], visibility: "public" })
+  const [data, setData] = useState({ creatorId: user?user.id:"", caption: "", tags: [] as string[], location: {} as LocationType, imgs: [] as string[], visibility: "public" })
   const handleChange = async (
     e:
       | React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement> | React.ChangeEvent<HTMLTextAreaElement>,
@@ -118,6 +118,7 @@ export default function PostForm() {
 
   const [userList, setUserList] = useState<User[]>([])
   const findUsers = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.value)
     if (e.target.value.length > 2) {
       const userResp = await fetch("/api/user", {
         method: "POST",
@@ -186,8 +187,8 @@ export default function PostForm() {
     <Loading />
   ) :
     (
-      <div className=" flex w-full bg-slate-950 p-8 rounded-2xl justify-between items-start flex-row gap-5 ">
-        <div className=" w-1/3 flex flex-col p-5  h-[60vh]">
+      <div className=" flex w-full h-fit bg-slate-950 p-4 md:p-8 rounded-2xl justify-between items-start flex-col md:flex-row gap-5 ">
+        <div className=" w-full md:w-1/3 flex flex-col p-5 h-full">
           {imgs.length > 0 ?
             <div className=" flex flex-col gap-4">
               <Carausel imgs={imgs} removeImage={removeImage} />
@@ -195,7 +196,7 @@ export default function PostForm() {
 
             </div> :
 
-            <button onClick={() => selectFile()} className=" w-full h-full bg-purple-600 text-slate-50 hover:bg-purple-50 hover:text-purple-500 border-2 border-purple-500 transition-all text-6xl rounded-2xl ">+</button>
+            <button onClick={() => selectFile()} className=" w-full h-full md:min-h-[60vh] min-h-[40vh] bg-purple-600 text-slate-50 hover:bg-purple-50 hover:text-purple-500 border-2 border-purple-500 transition-all text-6xl rounded-2xl ">+</button>
           }
           <input ref={fileSelect} type="file" multiple={true} className=" hidden " onChange={(e) => validateFileType(e)}></input>
 
@@ -230,7 +231,7 @@ export default function PostForm() {
                 }}
                 id="tags"
                 type="text"
-                className="{` w-full rounded-full text-black px-5 py-3"
+                className={` w-full rounded-full text-black px-5 py-3`}
                 placeholder="Connect with Collaborators"
               ></input>
               {/* <button onClick={() => addTag()} className=" px-4  rounded-full bg-purple-600 text-slate-50 hover:bg-purple-50 hover:text-purple-500 border-2 border-purple-500 transition-all">ADD</button> */}

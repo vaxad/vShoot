@@ -31,7 +31,7 @@ export default function Posts() {
   animate={{ opacity: 1}}
   transition={{ duration: 1 }} className=" text-4xl py-4">For you 
   </motion.div> */}
-  <div className=" w-full grid grid-cols-3 gap-5 ">
+  <div className=" w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 ">
     {posts?.map((post:Post)=>{
       return (
         <PostCard key={post.id} props={post} />

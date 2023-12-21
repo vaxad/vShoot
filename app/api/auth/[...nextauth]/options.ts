@@ -39,12 +39,17 @@ export const options: NextAuthOptions = {
                 // to verify with credentials
                 // Docs: https://next-auth.js.org/configuration/providers/credentials
                 // const user = { id: "42", name: "Dave", password: "nextauth" }
+
                 console.log("nextauth")
                 console.log(credentials)
+                const users = await prisma.user.findMany()
+                console.log(users)
                 const user = await prisma.user.findFirst({
                     where: { email: credentials?.email },
                   });
+                  console.log(user)
                   if(user){
+                    console.log("old user")
                   const passMatched = user?.password==="none"?true:await compare(credentials?.password as string, user?.password as string);
                 if (credentials?.email === user?.email && passMatched) {
                     const token = jwt.sign({ id: user.id }, key);
@@ -59,7 +64,7 @@ export const options: NextAuthOptions = {
                     return null
                 }
             }else{
-
+                console.log("new user")
       const encryptedPass = await hash(credentials?.password as string, 10);
 
                 const user = await prisma.user.create({
