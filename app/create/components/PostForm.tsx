@@ -191,7 +191,7 @@ export default function PostForm() {
         <div className=" w-full md:w-1/3 flex flex-col p-5 h-full">
           {imgs.length > 0 ?
             <div className=" flex flex-col gap-4">
-              <Carausel imgs={imgs} removeImage={removeImage} />
+              <Carausel imgs={imgs} removeImage={removeImage} size="small" link=""/>
               <button onClick={() => selectFile()} className=" w-full  bg-purple-600 text-slate-50 hover:bg-purple-50 hover:text-purple-500 border-2 border-purple-500 transition-all text-6xl rounded-2xl ">+</button>
 
             </div> :

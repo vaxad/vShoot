@@ -24,6 +24,7 @@ export async function POST(req: Request) {
 export async function PUT(req: Request) {
     try {
         const {id} = await req.json();
+        // console.log(id)
         const user = await prisma.user.findUnique(
             {
                 where: {

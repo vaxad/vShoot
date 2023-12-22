@@ -95,10 +95,10 @@ function areCoordinatesClose(coord1:Coordinates, coord2:Coordinates, threshold:n
 
   export async function PATCH(req: Request) {
     try {
-        const {lat, lon, id} = await req.json();
+        const {lat, lon} = await req.json();
         const postData = await prisma.post.findMany();
         const filteredPosts = postData.filter((post)=> {
-            if(!post.loc_lat||!post.loc_lon||post.id===id){
+            if(!post.loc_lat||!post.loc_lon){
                 return false
             }else{
                 return checkProximity({latitude:post.loc_lat,longitude:post.loc_lon, latitude2:lat, longitude2:lon})
@@ -106,7 +106,7 @@ function areCoordinatesClose(coord1:Coordinates, coord2:Coordinates, threshold:n
         })
         return NextResponse.json({ posts: filteredPosts });
     } catch (error) {
-        console.error('Error sending email:', error);
-        return NextResponse.json({ message: 'Email sending failed' });
+        console.error('error', error);
+        return NextResponse.json({ message: error });
     }
 };

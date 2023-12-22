@@ -1,7 +1,8 @@
 "use client"
+import Link from "next/link"
 import { useEffect, useState } from "react"
 
-export default function Carausel({ imgs, removeImage } : {imgs: string[], removeImage: (imageIndex: Number) => void} | {imgs: string[], removeImage: null}  ) {
+export default function Carausel({ imgs, removeImage, size, link } : {imgs: string[], removeImage: (imageIndex: Number) => void, size:string, link:string} | {imgs: string[], removeImage: null, size:string, link:string} ) {
     const [imageIndex, setimageIndex] = useState(0)
     const next = () => { setimageIndex((imageIndex+1)%(imgs.length)) }
     const prev = () => { setimageIndex((imageIndex-1)%(imgs.length)<0?(imageIndex-1)%(imgs.length)*-1:(imageIndex-1)%(imgs.length)) }
@@ -44,11 +45,11 @@ export default function Carausel({ imgs, removeImage } : {imgs: string[], remove
     onTouchStart={(e)=>handleTouchStart(e)}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
-     className="w-full flex relative flex-col mx-auto max-w-2xl overflow-hidden  ">
+     className="w-full h-full flex relative flex-col overflow-hidden  ">
         {/* <div className="absolute right-5 top-5 z-10 rounded-full bg-gray-600 px-2 text-center text-sm text-white">
             <span x-text="currentIndex"></span>/<span x-text="images.length"></span>
         </div> */}
-        {!!removeImage&&<button className=" z-20 fixed top-2 right-2 text-slate100 text-2xl cursor-pointer bg-purple-600 bg-opacity-60 rounded-full " onClick={()=>removeImage(imageIndex)}>
+        {!!removeImage&&<button className=" z-20 absolute top-2 right-2 text-slate100 text-2xl cursor-pointer bg-purple-600 bg-opacity-60 rounded-full " onClick={()=>removeImage(imageIndex)}>
         <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" className=" w-8" fill="currentColor" viewBox="0 0 32 32">
 <path d="M 8.71875 7.28125 L 7.28125 8.71875 L 14.5625 16 L 7.28125 23.28125 L 8.71875 24.71875 L 16 17.4375 L 23.28125 24.71875 L 24.71875 23.28125 L 17.4375 16 L 24.71875 8.71875 L 23.28125 7.28125 L 16 14.5625 Z"></path>
 </svg>
@@ -76,8 +77,18 @@ export default function Carausel({ imgs, removeImage } : {imgs: string[], remove
 </svg> </button>}
 
 
-        <div className=" relative h-[30vh] max-h-[40vh]">
+        <div className={` relative w-full ${size==="big"?"h-full":"h-[30vh] max-h-[40vh]"}`}>
+                {size==="big"||removeImage!==null?
                 <div className="w-full flex h-full justify-center items-center relative  top-0 overflow-x-hidden">
+                {/* <img src={imgs[imageIndex]} alt="image" className="rounded-sm  h-full" /> */}
+                {imgs.map((val,ind)=>(
+                    <div key={ind} className={`rounded-sm w-full absolute top-0 flex justify-center items-center bg-slate-900 h-full ${ind===imageIndex?"":ind>imageIndex?`translate-x-full`:`-translate-x-full`}`} style={{transitionDuration:"0.8s", transitionDelay:"0.1s", transitionProperty:"all", transitionTimingFunction:"ease-in-out"}} >
+                        <img src={val} alt="image" className=" w-full absolute bg-slate-100 h-full" style={{ filter:"blur(2px)", WebkitFilter:"blur(2px)"}} />
+                        <img src={val} alt="image" className=" bg-slate-100 shadow-md shadow-slate-900  h-full z-10" />
+                    </div>
+                ))}
+            </div>:
+                <Link href={`/shoots/${link}`} className="w-full flex h-full justify-center items-center relative  top-0 overflow-x-hidden">
                     {/* <img src={imgs[imageIndex]} alt="image" className="rounded-sm  h-full" /> */}
                     {imgs.map((val,ind)=>(
                         <div key={ind} className={`rounded-sm w-full absolute top-0 flex justify-center items-center bg-slate-900 h-full ${ind===imageIndex?"":ind>imageIndex?`translate-x-full`:`-translate-x-full`}`} style={{transitionDuration:"0.8s", transitionDelay:"0.1s", transitionProperty:"all", transitionTimingFunction:"ease-in-out"}} >
@@ -85,15 +96,16 @@ export default function Carausel({ imgs, removeImage } : {imgs: string[], remove
                             <img src={val} alt="image" className=" bg-slate-100 shadow-md shadow-slate-900  h-full z-10" />
                         </div>
                     ))}
-                </div>
-        </div>
-        <div className=" flex flex-row gap-2 absolute bottom-5 left-0 right-0 w-fit  ml-auto mr-auto">
+                </Link>}
+                <div className=" flex flex-row gap-2 absolute bottom-5 left-0 right-0 w-fit  ml-auto mr-auto">
     {imgs.length>1&&imgs.map((val,ind)=>{
         return (
             <div key={ind} className={` text-2xl transition-all bg-slate-200 ${ind===imageIndex?" bg-opacity-100":" bg-opacity-50"} w-2 h-2 rounded-full font-bold`}></div>
         )
     })}
 </div>
+        </div>
+       
     </div>
 
   )
