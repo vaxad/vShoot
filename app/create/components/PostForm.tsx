@@ -65,9 +65,12 @@ export default function PostForm() {
   }
 
   const [locations, setlocations] = useState<LocationType[]>([])
+  const key = process.env.NEXT_PUBLIC_MAPS_API_KEY
+  console.log(key)
   const searchLocation = async (address: string) => {
     try {
-      const locationsResponse = await fetch(`https://geocode.maps.co/search?q={${address}}`)
+      const locationsResponse = await fetch(`https://geocode.maps.co/search?q=${address}&api_key=${key}`)
+      console.log(locationsResponse)
       const locationData = await locationsResponse.json()
       setlocations(locationData)
     } catch (error) {
