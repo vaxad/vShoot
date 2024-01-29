@@ -7,7 +7,8 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = env("NEXT_PUBLIC_DATABASE_URL")
+  directUrl = env("NEXT_PUBLIC_DIRECT_URL")
 }
 
 model User {
@@ -25,6 +26,7 @@ model User {
   otp Int?
   verified Boolean?
   posts Post[]
+  comments Comment[]
   otpTime DateTime @default("1970-01-01T00:00:00Z")
   createdAt DateTime @default(now())
 }
@@ -40,6 +42,16 @@ model Post {
   loc_lat Float?
   loc_lon Float?
   likes String[]
-  comments String[]
+  comments Comment[]
+  createdAt DateTime @default(now())
+}
+
+model Comment {
+  id String         @id @default(cuid())
+  content String?
+  creator User? @relation(fields: [creatorId], references: [id])
+  creatorId String? 
+  about Post? @relation(fields: [aboutId], references: [id])
+  aboutId String?
   createdAt DateTime @default(now())
 }

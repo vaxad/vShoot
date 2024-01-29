@@ -2,12 +2,14 @@
 import store from "@/lib/zustand";
 import axios from "axios";
 import { useSession } from "next-auth/react";
-import { redirect, usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
 export default function AuthCheckr() {
   const path = usePathname();
   const router = useRouter();
+  console.log(process.env.NEXT_PUBLIC_DATABASE_URL)
+  console.log("test")
   // const { token, setToken, setUser } = store();
   const { data: session } = useSession({
     required: true,
@@ -57,7 +59,7 @@ const sendOtp = async(user:UserNull) => {
       console.log(res)
       if(res.expired){
         if(path!=="/"&&!path.includes("auth"))
-        router.push(`http://${url}/api/auth/signin?callbackUrl=/auth`)
+        router.push(`${url}api/auth/signin?callbackUrl=/auth`)
       }else{
       if(!res.user){
         if(!path.includes("auth")&&path!=="/")

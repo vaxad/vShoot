@@ -6,8 +6,37 @@ import { Post } from "@prisma/client"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 
+const CommentCard = ({comment}:{comment:any}) => {
+  const [creator, setcreator] = useState(null as UserNull)
+  const getcreator = async() => {
+  const res = await fetch(`/api/user`,{
+      method:"PUT",
+      body:JSON.stringify({id:comment.creatorId})
+  })
+  setcreator((await res.json()).user)
+  }
+  useEffect(() => {
+    getcreator()
+  }, [])
+  
+return(
+  <div className=" flex flex-col justify-start items-start py-2 w-full px-3 bg-purple-800 rounded-md">
+    <div className="flex w-full justify-between items-center">
+  <h1>{creator?creator.name:"some random user"}</h1>
+  <p className=" text-xs font-thin">{(new Date(comment.createdAt)).toDateString()}</p>
+  </div>
+  <p>{comment.content}</p>
+</div>
+)}
 export default function PostShowcase({props:post}:{props:Post}) {
   const [creator, setcreator] = useState(null as UserNull)
+  const [comments, setComments] = useState([] as any[])
+  const getComments = async() => {
+    const res = await fetch(`/api/comment/${post.id}`,{
+      method:"GET"
+    })
+    setComments((await res.json()).comments)
+  }
   const {user} = store()
   const isLiked = async() => {
     const res = await fetch(`/api/post/${post.id}`,{
@@ -27,6 +56,7 @@ export default function PostShowcase({props:post}:{props:Post}) {
     }
     const [liked, setLiked] = useState(false)
     useEffect(() => {
+      getComments()
       if(post.creatorId)
       getcreator(post.creatorId)
     }, [])
@@ -67,14 +97,24 @@ export default function PostShowcase({props:post}:{props:Post}) {
       </div>
         <div className=" flex flex-col justify-start items-center gap-5 px-4 w-full h-full py-3 bg-slate-900 mx-2 rounded-md">
         <div className=" flex flex-row justify-start items-center px-3 py-2 bg-indigo-500 w-full rounded-lg ">
-          <input className=" flex w-full bg-transparent appearance-none outline-none border-0 focus:ring-0 placeholder:text-sm text-sm placeholder:text-indigo-400" placeholder="Comment..."></input>
-          <img className=" w-6 cursor-pointer" src="https://img.icons8.com/material-rounded/24/ffffff/sent.png" alt="sent"/>
+          <input id="commentContent" className=" flex w-full bg-transparent appearance-none outline-none border-0 focus:ring-0 placeholder:text-sm text-sm placeholder:text-indigo-400" placeholder="Comment..."></input>
+          <img className=" w-6 cursor-pointer" onClick={async()=>{
+            console.log("comment")
+            const content = document.querySelector("#commentContent") as HTMLInputElement
+            console.log(content.value)
+            const res = await fetch(`/api/comment/${post.id}`,{
+              method:"POST",
+              body:JSON.stringify({content:content.value,creatorId:user?.id})
+            })
+            const resp = await res.json()
+            setComments([...comments,resp.comment])
+            content.value=""
+          }} src="https://img.icons8.com/material-rounded/24/ffffff/sent.png" alt="sent"/>
           </div>
           <div className=" flex flex-col gap-5 justify-start items-start h-fit w-full py-4 overflow-y-scroll" style={{scrollbarWidth:"none"}}>
-          <div className=" flex flex-col justify-start items-start py-2 w-full px-3 bg-purple-800 rounded-md">
-            <h1>@username</h1>
-            <p>fsndfksdisdigusdkfkjgsdihfbisdhfgh</p>
-          </div>
+          {comments.map((comment)=>
+          <CommentCard comment={comment}></CommentCard>
+          )}
           </div>
         </div>
         </div>
